@@ -1,13 +1,13 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import portraitUrl from "../photo.jpg";
 
 const { locale, t, tm } = useI18n();
 const isMenuOpen = ref(false);
 const isScrolled = ref(false);
 const selectedImpact = ref(null);
 const copiedMessage = ref("");
-const portraitUrl = `${import.meta.env.BASE_URL}IMG_2476.jpeg`;
 const emailAddress = "manxuan@gmail.com";
 
 const navItems = computed(() => [
