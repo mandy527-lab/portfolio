@@ -12,10 +12,9 @@ const emailAddress = "manxuan@gmail.com";
 
 const navItems = computed(() => [
   ["profile", t("nav.profile")],
-  ["projects", t("nav.projects")],
-  ["experience", t("nav.experience")],
   ["skills", t("nav.skills")],
-  ["goal", t("nav.goal")],
+  ["experience", t("nav.experience")],
+  ["projects", t("nav.projects")],
 ]);
 
 const setLocale = (nextLocale) => {
@@ -169,17 +168,6 @@ onUnmounted(() => {
       <div class="profile-layout">
         <div class="statement">
           <p v-for="paragraph in tm('profile.paragraphs')" :key="paragraph">{{ paragraph }}</p>
-          <div class="inline-skills" id="skills">
-            <div class="section-heading compact">
-              <h2>{{ t("skillsTitle") }}</h2>
-            </div>
-            <div class="skill-grid">
-              <article v-for="skill in tm('skills')" :key="skill[0]">
-                <h3>{{ skill[0] }}</h3>
-                <p>{{ skill[1] }}</p>
-              </article>
-            </div>
-          </div>
         </div>
         <div class="focus-list">
           <article v-for="focus in tm('profile.focus')" :key="focus[0]">
@@ -188,6 +176,36 @@ onUnmounted(() => {
             <p>{{ focus[2] }}</p>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section-band" id="skills">
+      <div class="section-shell">
+        <div class="section-heading compact">
+          <h2>{{ t("skillsTitle") }}</h2>
+        </div>
+        <div class="skill-grid">
+          <article v-for="skill in tm('skills')" :key="skill[0]">
+            <h3>{{ skill[0] }}</h3>
+            <p>{{ skill[1] }}</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell" id="experience">
+      <div class="section-heading compact">
+        <h2>{{ t("experienceTitle") }}</h2>
+      </div>
+      <div class="timeline">
+        <article v-for="item in tm('experience')" :key="item.date" class="timeline-item">
+          <div class="timeline-date">{{ item.date }}</div>
+          <div>
+            <h3>{{ item.role }}</h3>
+            <p>{{ item.body }}</p>
+            <p v-if="item.clients" class="client-line">{{ item.clients }}</p>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -218,29 +236,6 @@ onUnmounted(() => {
             </div>
           </article>
         </div>
-      </div>
-    </section>
-
-    <section class="section-shell" id="experience">
-      <div class="section-heading compact">
-        <h2>{{ t("experienceTitle") }}</h2>
-      </div>
-      <div class="timeline">
-        <article v-for="item in tm('experience')" :key="item.date" class="timeline-item">
-          <div class="timeline-date">{{ item.date }}</div>
-          <div>
-            <h3>{{ item.role }}</h3>
-            <p>{{ item.body }}</p>
-            <p v-if="item.clients" class="client-line">{{ item.clients }}</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section-shell" id="goal">
-      <div class="goal-panel">
-        <h2>{{ t("goal.title") }}</h2>
-        <p>{{ t("goal.body") }}</p>
       </div>
     </section>
   </main>

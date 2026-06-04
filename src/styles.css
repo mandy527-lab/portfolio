@@ -549,12 +549,12 @@ h4 {
 
 .profile-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  gap: 22px;
+  gap: 18px;
   align-items: start;
 }
 
 .statement {
+  max-width: 900px;
   color: var(--body);
   font-size: 0.94rem;
 }
@@ -567,12 +567,9 @@ h4 {
   margin-bottom: 0;
 }
 
-.inline-skills {
-  margin-top: 18px;
-}
-
 .focus-list {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -595,8 +592,7 @@ h4 {
 .focus-list p,
 .skill-grid p,
 .project-summary,
-.client-line,
-.goal-panel p {
+.client-line {
   color: var(--muted);
 }
 
@@ -704,21 +700,6 @@ h4 {
   font-size: 0.86rem;
 }
 
-.goal-panel {
-  max-width: 900px;
-  border-left: 4px solid var(--teal);
-  padding: 18px 22px;
-  background: var(--white);
-}
-
-.goal-panel h2 {
-  font-size: clamp(1.45rem, 2.4vw, 2.05rem);
-}
-
-.goal-panel p:last-child {
-  margin-bottom: 0;
-}
-
 .site-footer {
   display: flex;
   align-items: center;
@@ -742,6 +723,7 @@ h4 {
     width: min(380px, 100%);
   }
 
+  .focus-list,
   .skill-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -832,6 +814,7 @@ h4 {
   }
 
   .project-columns,
+  .focus-list,
   .impact-list,
   .skill-grid {
     grid-template-columns: 1fr;
@@ -869,10 +852,6 @@ h4 {
   .contact-list div {
     grid-template-columns: 1fr;
     gap: 4px;
-  }
-
-  .goal-panel {
-    padding: 22px;
   }
 
   .site-footer {

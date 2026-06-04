@@ -7,7 +7,6 @@ const messages = {
       projects: "專案",
       experience: "經歷",
       skills: "能力",
-      goal: "方向",
     },
     hero: {
       role: "Product Manager",
@@ -66,9 +65,9 @@ const messages = {
       eyebrow: "Profile",
       title: "關於我",
       paragraphs: [
-        "畢業於東吳大學資訊管理學系，目前擔任 Product Manager，主要負責 SurveyCake Enterprise 產品規劃與企業客戶專案管理。",
-        "工作內容涵蓋需求訪談、產品規劃、PRD 撰寫、User Flow 設計、API 串接規劃、跨部門協作、測試驗收與產品上線。過去曾參與 OTP 驗證服務、企業問卷自動化流程、白名單驗證、活動報名報到系統等產品規劃與落地執行。",
-        "我特別喜歡參與產品從無到有的過程，也熱衷於將客製化需求轉化為可規模化複製的產品。",
+        "畢業於東吳大學資訊管理學系，目前擔任 Product Manager，負責 SurveyCake Enterprise 的產品規劃與企業客戶專案管理。",
+        "我主要處理從需求釐清、產品規格、流程設計到跨部門協作與上線驗收的完整流程，曾參與 OTP 驗證服務、企業問卷自動化、白名單驗證與活動報名報到系統等專案。",
+        "我擅長把複雜需求整理成清楚、可執行的產品方案，也對 0 到 1 產品開發，以及將客製化需求轉化為可複用模組特別有興趣。",
       ],
       focus: [
         ["01", "找出真正的問題", "透過需求訪談與使用情境分析，釐清客戶真正遇到的痛點。"],
@@ -76,7 +75,7 @@ const messages = {
         ["03", "推動產品落地", "協調工程、QA、客服、業務與客戶，確保產品順利上線並創造價值。"],
       ],
     },
-    projectsTitle: "專案",
+    projectsTitle: "專案成就",
     projects: [
       {
         kicker: "SurveyCake Enterprise",
@@ -159,10 +158,6 @@ const messages = {
       ["技術理解", "API Integration, Webhook, SaaS Product, System Flow Design, Enterprise Solution"],
       ["工具", "Jira, Confluence, Notion, Figma, Miro, Postman"],
     ],
-    goal: {
-      title: "未來方向",
-      body: "我希望持續投入產品管理領域，參與更多從需求探索、產品規劃到產品成長的完整生命週期。未來期待加入重視產品文化與使用者價值的團隊，持續提升產品思維、商業理解與跨部門協作能力，成為能夠獨立推動產品成長與商業成果的產品經理。",
-    },
   },
   en: {
     nav: {
@@ -170,7 +165,6 @@ const messages = {
       projects: "Projects",
       experience: "Experience",
       skills: "Skills",
-      goal: "Goal",
     },
     hero: {
       role: "Product Manager",
@@ -239,7 +233,7 @@ const messages = {
         ["03", "Delivery Management", "Coordinate engineering, QA, support, sales, and clients to ensure delivery and launch."],
       ],
     },
-    projectsTitle: "Selected Projects",
+    projectsTitle: "Projects Achievements",
     projects: [
       {
         kicker: "SurveyCake Enterprise",
@@ -322,10 +316,6 @@ const messages = {
       ["Technical Understanding", "API Integration, Webhook, SaaS Product, System Flow Design, Enterprise Solution"],
       ["Tools", "Jira, Confluence, Notion, Figma, Miro, Postman"],
     ],
-    goal: {
-      title: "Future Direction",
-      body: "I aim to continue growing in product management and contribute across the full lifecycle from discovery and planning to launch and growth. I hope to join a team that values product culture and user value, while continuing to strengthen product thinking, business understanding, and cross-functional execution.",
-    },
   },
 };
 
