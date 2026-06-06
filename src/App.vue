@@ -22,6 +22,7 @@ const projectMedia = [
 ];
 const activeProjectImages = ref(projectMedia.map(() => 0));
 let projectCarouselTimer;
+let revealObserver;
 
 const navItems = computed(() => [
   ["profile", t("nav.profile")],
@@ -77,6 +78,31 @@ const onKeydown = (event) => {
   if (event.key === "Escape") closeImpact();
 };
 
+const setupRevealAnimation = () => {
+  const revealItems = document.querySelectorAll(".reveal-up");
+
+  if (!("IntersectionObserver" in window)) {
+    revealItems.forEach((item) => item.classList.add("is-visible"));
+    return;
+  }
+
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      });
+    },
+    {
+      rootMargin: "0px 0px -12% 0px",
+      threshold: 0.14,
+    },
+  );
+
+  revealItems.forEach((item) => revealObserver.observe(item));
+};
+
 watch(
   locale,
   (nextLocale) => {
@@ -92,12 +118,14 @@ onMounted(() => {
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("keydown", onKeydown);
   projectCarouselTimer = window.setInterval(advanceProjectImages, 4200);
+  setupRevealAnimation();
 });
 
 onUnmounted(() => {
   window.removeEventListener("scroll", onScroll);
   window.removeEventListener("keydown", onKeydown);
   window.clearInterval(projectCarouselTimer);
+  revealObserver?.disconnect();
 });
 </script>
 
@@ -187,25 +215,25 @@ onUnmounted(() => {
     </section>
 
     <section class="section-shell profile-section" id="profile">
-      <div class="section-heading">
+      <div class="section-heading reveal-up">
         <h2>{{ t("profile.title") }}</h2>
       </div>
       <div class="profile-layout">
-        <div class="statement">
+        <div class="statement reveal-up">
           <p v-for="paragraph in tm('profile.paragraphs')" :key="paragraph">{{ paragraph }}</p>
         </div>
       </div>
 
       <div class="skills-tools">
         <div class="focus-list">
-          <article v-for="focus in tm('profile.focus')" :key="focus[0]">
+          <article v-for="focus in tm('profile.focus')" :key="focus[0]" class="reveal-up">
             <span>{{ focus[0] }}</span>
             <h3>{{ focus[1] }}</h3>
             <p>{{ focus[2] }}</p>
           </article>
         </div>
 
-        <div class="skills-tools-layout">
+        <div class="skills-tools-layout reveal-up">
           <div>
             <h3>{{ t("profile.skillsTitle") }}</h3>
             <div class="skill-grid">
@@ -230,11 +258,11 @@ onUnmounted(() => {
     </section>
 
     <section class="section-shell" id="experience">
-      <div class="section-heading compact">
+      <div class="section-heading compact reveal-up">
         <h2>{{ t("experienceTitle") }}</h2>
       </div>
       <div class="timeline">
-        <article v-for="item in tm('experience')" :key="item.date" class="timeline-item">
+        <article v-for="item in tm('experience')" :key="item.date" class="timeline-item reveal-up">
           <div class="timeline-date">{{ item.date }}</div>
           <div>
             <h3>{{ item.role }}</h3>
@@ -247,12 +275,12 @@ onUnmounted(() => {
 
     <section class="section-band" id="projects">
       <div class="section-shell">
-        <div class="section-heading compact">
+        <div class="section-heading compact reveal-up">
           <h2>{{ t("projectsTitle") }}</h2>
         </div>
 
         <div class="project-list">
-          <article v-for="(project, projectIndex) in tm('projects')" :key="project.title" class="project-card">
+          <article v-for="(project, projectIndex) in tm('projects')" :key="project.title" class="project-card reveal-up">
             <div class="project-head">
               <div>
                 <p class="project-kicker">{{ project.kicker }}</p>
