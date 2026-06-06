@@ -2,6 +2,12 @@
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import portraitUrl from "../photo.jpg";
+import otpUrl from "../OTP.png";
+import otpSurveyUrl from "../OTP 問卷.png";
+import aioUrl from "../AIO.png";
+import aioSurveyUrl from "../AIO 問卷.png";
+import toyotaUrl from "../和泰.png";
+import toyotaSurveyUrl from "../和泰問卷.png";
 
 const { locale, t, tm } = useI18n();
 const isMenuOpen = ref(false);
@@ -9,10 +15,16 @@ const isScrolled = ref(false);
 const selectedImpact = ref(null);
 const copiedMessage = ref("");
 const emailAddress = "manxuan@gmail.com";
+const projectMedia = [
+  [otpUrl, otpSurveyUrl],
+  [aioUrl, aioSurveyUrl],
+  [toyotaUrl, toyotaSurveyUrl],
+];
+const activeProjectImages = ref(projectMedia.map(() => 0));
+let projectCarouselTimer;
 
 const navItems = computed(() => [
   ["profile", t("nav.profile")],
-  ["skills", t("nav.skills")],
   ["experience", t("nav.experience")],
   ["projects", t("nav.projects")],
 ]);
@@ -46,6 +58,17 @@ const closeImpact = () => {
   selectedImpact.value = null;
 };
 
+const setProjectImage = (projectIndex, imageIndex) => {
+  activeProjectImages.value[projectIndex] = imageIndex;
+};
+
+const advanceProjectImages = () => {
+  activeProjectImages.value = activeProjectImages.value.map((imageIndex, projectIndex) => {
+    const images = projectMedia[projectIndex] || [];
+    return images.length ? (imageIndex + 1) % images.length : 0;
+  });
+};
+
 const onScroll = () => {
   isScrolled.value = window.scrollY > 12;
 };
@@ -68,11 +91,13 @@ onMounted(() => {
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("keydown", onKeydown);
+  projectCarouselTimer = window.setInterval(advanceProjectImages, 4200);
 });
 
 onUnmounted(() => {
   window.removeEventListener("scroll", onScroll);
   window.removeEventListener("keydown", onKeydown);
+  window.clearInterval(projectCarouselTimer);
 });
 </script>
 
@@ -80,7 +105,7 @@ onUnmounted(() => {
   <header class="site-header" :class="{ scrolled: isScrolled }">
     <a class="brand" href="#top" aria-label="Back to top" @click="closeMenu">
       <img class="brand-avatar" :src="portraitUrl" alt="Mandy Lin" />
-      <span>Mandy Lin</span>
+      <span>Mandy Portfolio</span>
     </a>
 
     <nav class="site-nav" :class="{ open: isMenuOpen }" aria-label="Main navigation">
@@ -101,6 +126,7 @@ onUnmounted(() => {
         :aria-expanded="String(isMenuOpen)"
         @click="isMenuOpen = !isMenuOpen"
       >
+        <span></span>
         <span></span>
         <span></span>
       </button>
@@ -150,7 +176,6 @@ onUnmounted(() => {
         <h1>{{ t("hero.name") }}</h1>
         <p class="hero-lead">{{ t("hero.lead") }}</p>
         <p class="hero-summary">{{ t("hero.summary1") }}</p>
-        <p class="hero-summary">{{ t("hero.summary2") }}</p>
 
         <div class="impact-list" aria-label="Impact highlights">
           <button v-for="item in tm('impact')" :key="item.value" type="button" @click="openImpact(item)">
@@ -169,6 +194,9 @@ onUnmounted(() => {
         <div class="statement">
           <p v-for="paragraph in tm('profile.paragraphs')" :key="paragraph">{{ paragraph }}</p>
         </div>
+      </div>
+
+      <div class="skills-tools">
         <div class="focus-list">
           <article v-for="focus in tm('profile.focus')" :key="focus[0]">
             <span>{{ focus[0] }}</span>
@@ -176,19 +204,27 @@ onUnmounted(() => {
             <p>{{ focus[2] }}</p>
           </article>
         </div>
-      </div>
-    </section>
 
-    <section class="section-band" id="skills">
-      <div class="section-shell">
-        <div class="section-heading compact">
-          <h2>{{ t("skillsTitle") }}</h2>
-        </div>
-        <div class="skill-grid">
-          <article v-for="skill in tm('skills')" :key="skill[0]">
-            <h3>{{ skill[0] }}</h3>
-            <p>{{ skill[1] }}</p>
-          </article>
+        <div class="skills-tools-layout">
+          <div>
+            <h3>{{ t("profile.skillsTitle") }}</h3>
+            <div class="skill-grid">
+              <article v-for="skill in tm('skills')" :key="skill[0]">
+                <h3>{{ skill[0] }}</h3>
+                <p>{{ skill[1] }}</p>
+              </article>
+            </div>
+          </div>
+
+          <div>
+            <h3>{{ t("profile.toolsTitle") }}</h3>
+            <div class="tool-grid">
+              <article v-for="tool in tm('tools')" :key="tool[0]">
+                <h3>{{ tool[0] }}</h3>
+                <p>{{ tool[1] }}</p>
+              </article>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -216,7 +252,7 @@ onUnmounted(() => {
         </div>
 
         <div class="project-list">
-          <article v-for="project in tm('projects')" :key="project.title" class="project-card">
+          <article v-for="(project, projectIndex) in tm('projects')" :key="project.title" class="project-card">
             <div class="project-head">
               <div>
                 <p class="project-kicker">{{ project.kicker }}</p>
@@ -226,12 +262,35 @@ onUnmounted(() => {
               <span class="project-result">{{ project.result }}</span>
             </div>
             <p class="project-summary">{{ project.summary }}</p>
-            <div class="project-columns" :class="{ three: project.columns.length === 3 }">
-              <div v-for="column in project.columns" :key="column.title">
-                <h4>{{ column.title }}</h4>
-                <ul>
-                  <li v-for="item in column.items" :key="item">{{ item }}</li>
-                </ul>
+            <div class="project-overview">
+              <div class="project-carousel">
+                <div class="project-media" :aria-label="`${project.title} screenshots`">
+                  <img
+                    v-for="(imageUrl, imageIndex) in projectMedia[projectIndex]"
+                    :key="imageUrl"
+                    :src="imageUrl"
+                    :alt="`${project.title} screenshot ${imageIndex + 1}`"
+                    :class="{ active: activeProjectImages[projectIndex] === imageIndex }"
+                  />
+                </div>
+                <div class="project-dots" :aria-label="`${project.title} image controls`">
+                  <button
+                    v-for="(_, imageIndex) in projectMedia[projectIndex]"
+                    :key="imageIndex"
+                    type="button"
+                    :class="{ active: activeProjectImages[projectIndex] === imageIndex }"
+                    :aria-label="`Show ${project.title} image ${imageIndex + 1}`"
+                    @click="setProjectImage(projectIndex, imageIndex)"
+                  ></button>
+                </div>
+              </div>
+              <div class="project-columns" :class="{ three: project.columns.length === 3 }">
+                <div v-for="(column, columnIndex) in project.columns" :key="column.title" :class="{ outcome: columnIndex === project.columns.length - 1 }">
+                  <h4>{{ column.title }}</h4>
+                  <ul>
+                    <li v-for="item in column.items" :key="item">{{ item }}</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </article>
@@ -255,6 +314,7 @@ onUnmounted(() => {
   </Teleport>
 
   <footer class="site-footer">
-    <span>林蔓萱 Mandy Lin｜Product Manager</span>
+    <span>© 2026 Mandy Lin. All rights reserved.</span>
+    <span>Built with passion for technology and innovation</span>
   </footer>
 </template>
